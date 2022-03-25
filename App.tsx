@@ -1,8 +1,12 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+<<<<<<< HEAD
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Auth from './views/Auth';
+=======
+import { StyleSheet, Text, View} from 'react-native';
+>>>>>>> 24f8aa17498559eb1df7b13ff1f254a3d5b0f766
 
 export default function App() {
   const [loaded] = useFonts({
