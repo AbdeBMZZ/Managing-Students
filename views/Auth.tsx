@@ -15,18 +15,27 @@ function Auth(props:any) {
     const [password, setPass] = React.useState('');
   
     const login = ()=>{
-  
+      props.navigate('AddStudent');
     }
   
     return (
       <View style={styles.cantainer}>
-          <Image source={require('../assets/backgound.jpg')} />
+          <Image style={styles.background} source={require('../assets/backgound.jpg')} />
           <View style={styles.subView}>
-            <Text style={styles.subTxt}>Login</Text>
-            <TextInput underlineColorAndroid ='transparent' style={styles.nameInput} placeholder="Email" onChangeText={(user) => { setUsername(user) }} />
-            <TextInput underlineColorAndroid ='transparent' style={styles.nameInput} placeholder="Password" onChangeText={(pass) => { setPass( pass )}} />
+            <Text style={styles.subTxt}>Authentification</Text>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/cne_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Email" onChangeText={(user) => { setUsername(user) }} />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/pass_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Password" onChangeText={(pass) => { setPass( pass )}} />
+            </View>
+
             <TouchableOpacity style={styles.btn} onPress={login}>
-              <Text style={styles.btnTxt}>Login</Text>
+              <Text style={styles.btnTxt}>Connexion</Text>
             </TouchableOpacity>
             
           </View>
@@ -42,42 +51,35 @@ function Auth(props:any) {
     },
     subView: {
       position: 'absolute',
-      backgroundColor: '#DFE6E9',
+      backgroundColor: 'hsla(198, 19%, 89%, 0.8)',
       width: '100%',
       bottom: 0,
-      padding: 20,
+      padding: 30,
       
       paddingBottom: 20,
       alignItems: 'center',
       borderTopRightRadius: 40,
       borderTopLeftRadius: 40,
     },
-    headerTxt: {
-      fontSize: 40,
-      marginLeft: 40,
-      fontWeight: 'bold',
-      color: 'white',
-      position: 'absolute',
-      marginTop: 140,
-    },
+    
     subTxt: {
       color: 'black',
-      marginTop: 20,
+      marginTop: 15,
       fontSize: 30,
-      fontWeight: 'bold',
+      
+      marginBottom:20
     },
-    nameInput: {
+    inputText: {
       backgroundColor: 'white',
       borderRadius : 10,
       padding : 10,
-      fontSize: 20,
+      fontSize: 17,
       width: '100%',
-      marginTop: 30,
     },
     btn: {
       height: 50,
       width: 200,
-      backgroundColor: 'blue',
+      backgroundColor: 'hsla(194, 100%, 0%, 0.61)',
       borderRadius: 80,
       borderWidth: 2,
     
@@ -88,13 +90,32 @@ function Auth(props:any) {
     btnTxt: {
       color: 'white',
       fontWeight: 'bold',
-      fontSize: 20,
+      fontSize: 15,
     },
     loginTxt: {
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: 'bold',
-      marginTop: 24,
     },
+    inputContainer:{
+      borderRadius: 10,
+      margin:10,
+      backgroundColor :'hsla(194, 100%, 0%, 0.61)',
+      flexDirection : 'row',
+      justifyContent: 'center'
+    },
+    inputIcon:{
+      height:20,
+      width:20,
+      padding:5,
+      marginLeft: 60,
+      marginRight: 15,
+      alignSelf:"center",
+    },
+    background:{
+      width: '100%',
+      height: '100%',
+      aspectRatio: 1,
+    }
   });
   
   export default Auth;
