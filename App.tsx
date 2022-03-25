@@ -1,12 +1,21 @@
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Auth from './views/Auth';
 
 export default function App() {
+  const [loaded] = useFonts({
+    Oswald_Bold: require('./assets/fonts/Oswald-Bold.ttf'),
+  });
+  
+  if (!loaded) {
+    return null;
+  }
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Auth/>
   );
 }
 
