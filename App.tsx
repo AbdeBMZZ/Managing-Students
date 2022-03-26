@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { createContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Auth from './views/Auth';
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,26 +14,28 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
+
+  
   const [authenticated, setAuthenticated] = React.useState({});
 
-  interface auth_interface{
-    name:string,
-    is_admin:boolean
-  }
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-      screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen
-          name="Auth"
-          component={Auth}
-          options={{ title: 'Welcome' }}
-        />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <authContext.Provider value = {{authenticated, setAuthenticated}}>
+
+      <NavigationContainer>
+        <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen
+            name="Auth"
+            component={Auth}
+            options={{ title: 'Welcome' }}
+            />
+          <Stack.Screen name="Dashboard" component={Dashboard} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </authContext.Provider>
   );
 }
 

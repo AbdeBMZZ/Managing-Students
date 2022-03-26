@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect } from 'react';
 import {
   Text,
   View,
@@ -16,14 +17,31 @@ function Auth({ navigation }) {
     const [userName, setUsername] = React.useState('');
     const [password, setPass] = React.useState('');
 
-    const login = ()=>{
+    const {setAuthenticated} = useContext(authContext);
+
+
+    const login = async ()=>{
       // props.navigation.navigate('AddStudent');
        // props.navigate('AddStudent');
       // navigation.navigate(Dashboard)
       console.log(userName)
       console.log(password)
 
-      navigation.navigate('Dashboard', { name: 'abdoooo' })
+
+      const loggedInStudent = axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/login.php?cne=${userName}&pass=${password}`)
+      .then((response)=>{
+        console.log("log in :")
+        console.log(response.data)
+        // alert(loggedInUser.nom)
+        console.log(response.data.etudiant)
+        
+        setAuthenticated(response.data.etudiant)
+        
+        navigation.navigate("Dashboard")
+      })
+      .catch((err)=>alert(err));
+
+
     }
     
   

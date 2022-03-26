@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import {
   Text,
@@ -9,16 +10,25 @@ import {
   Image
 } from 'react-native';
 
-function AddStudent(props:any) {
+function AddStudent({changeIndex, refreshEtds}) {
 
     const [cne, setCne] = React.useState('');
     const [name, setName] = React.useState('');
     const [prenom, setPrenom] = React.useState('');
     const [phone, setPhone] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [password, setPass] = React.useState('');
   
     const addStudent = ()=>{
-  
+      axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/ajout.php?cne=${cne}&nom=${name}&prenom=${prenom}&phone=${phone}&email=${email}&pass=${password}`)
+      .then(async (response)=>{
+        refreshEtds()
+        changeIndex(0)
+
+      })
+      .catch((err)=> alert(err))
+
+
     }
   
     return (
@@ -45,6 +55,11 @@ function AddStudent(props:any) {
             <View style={styles.inputContainer}>
               <Image style={styles.inputIcon} source={require('../assets/phone_white.png')}/>
               <TextInput underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Phone" onChangeText={(phone) => { setPhone(phone)}} />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/phone_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Email" onChangeText={(email) => { setEmail(email)}} />
             </View>
 
             <View style={styles.inputContainer}>
