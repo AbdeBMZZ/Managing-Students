@@ -8,15 +8,24 @@ import {
   Alert,
   Image
 } from 'react-native';
+import authContext from '../context/authContext';
+import Dashboard from './Dashboard';
 
-function Auth(props:any) {
+function Auth({ navigation }) {
 
     const [userName, setUsername] = React.useState('');
     const [password, setPass] = React.useState('');
-  
+
     const login = ()=>{
-      props.navigate('AddStudent');
+      // props.navigation.navigate('AddStudent');
+       // props.navigate('AddStudent');
+      // navigation.navigate(Dashboard)
+      console.log(userName)
+      console.log(password)
+
+      navigation.navigate('Dashboard', { name: 'abdoooo' })
     }
+    
   
     return (
       <View style={styles.cantainer}>

@@ -4,15 +4,36 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Auth from './views/Auth';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import AddStudent from './views/AddStudent';
+import Dashboard from './views/Dashboard';
+import authContext from "./context/authContext";
+
+
+const Stack = createStackNavigator();
 
 
 export default function App() {
+  const [authenticated, setAuthenticated] = React.useState({});
 
-
+  interface auth_interface{
+    name:string,
+    is_admin:boolean
+  }
   return (
-    <Auth />
+    <NavigationContainer>
+      <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen
+          name="Auth"
+          component={Auth}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

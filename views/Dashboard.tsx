@@ -5,6 +5,7 @@ import { Avatar, ListItem, Tab, TabView } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import * as React from 'react';
 import { SearchBar } from 'react-native-elements';
+import axios from 'axios';
 
 
 export default function Dashboard() {
@@ -12,6 +13,15 @@ export default function Dashboard() {
   const [search, setsearch] = React.useState("");
   const [index, setIndex] = React.useState(1);
  
+  const [etudiantList, setEtudiantList] = React.useState([])
+
+  React.useEffect( async ()=>{
+    const data = await axios.get("https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/selection.php").catch()
+    
+    console.log(data.data)
+    setEtudiantList(data.data)
+    alert(etudiantList.length)
+    },[])
   const etudiants_data = [
     {
       name: 'Abdellah boumaiza',
@@ -108,14 +118,27 @@ export default function Dashboard() {
             value={search}
             placeholder="Find student by cne"
           />
+          
             <ScrollView style={styles.scrollView}>
               {
-              etudiants_data.map((etudiant, i) => (
+                  etudiantList && 
+                  etudiantList.map((etudiant, i) => (
                 <ListItem key={i} bottomDivider>
-                  <Avatar rounded source={{uri: etudiant.avatar_url}} />
+                {/* <Avatar
+                    size="xlarge"
+                    rounded
+                    title="CR"
+                    onPress={() => console.log("Works!")}
+                    activeOpacity={1}
+                    /> */}
+
+                    {
+
+                    }
+                  <Avatar rounded source={{uri: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'}} />
                   <ListItem.Content>
-                    <ListItem.Title>{etudiant.name}</ListItem.Title>
-                    <ListItem.Subtitle>{etudiant.subtitle}</ListItem.Subtitle>
+                    <ListItem.Title>{etudiant.nom}</ListItem.Title>
+                    <ListItem.Subtitle>{etudiant.email}</ListItem.Subtitle>
                   </ListItem.Content>
                 </ListItem>
               ))
