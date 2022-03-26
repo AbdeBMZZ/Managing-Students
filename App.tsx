@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput} from "react-native";
+import { StyleSheet, Text, View, TextInput, SafeAreaView , ScrollView } from "react-native";
 import Home from './components/Home';
 import Header_title from './components/Header_title';
 import { Avatar, ListItem, Tab, TabView } from 'react-native-elements';
@@ -20,6 +20,50 @@ export default function App() {
       subtitle: 'Etudiant LP-SIGL'
     },
     {
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
+      name: 'Rachid Abbad',
+      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      subtitle: 'Etudiant LP-SIGL'
+    },{
       name: 'Rachid Abbad',
       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
       subtitle: 'Etudiant LP-SIGL'
@@ -46,37 +90,40 @@ export default function App() {
       <Tab.Item
         title="etudiants"
         titleStyle={{ fontSize: 12 }}
-        icon={{ name: 'people', type: 'ionicon', color: 'white' }}
+        icon={{ name: 'people-outline', type: 'ionicon', color: 'white' }}
       />
       <Tab.Item
         title="Add"
         titleStyle={{ fontSize: 12 }}
-        icon={{ name: 'add-circle', type: 'ionicon', color: 'white' }}
+        icon={{ name: 'add-circle-outline', type: 'ionicon', color: 'white' }}
       />
     </Tab>
 
     <TabView value={index} onChange={setIndex} animationType="spring">
       <TabView.Item style={{ width: '100%' }}>
-        <View>
-        <TextInput
+        
+          <SafeAreaView style={styles.containerScroll}>
+          <TextInput
             style={styles.input}
             onChangeText={setsearch}
             value={search}
             placeholder="Find student by cne"
           />
-          {
-            etudiants_data.map((l, i) => (
-              <ListItem key={i} bottomDivider>
-                <Avatar rounded source={{uri: l.avatar_url}} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.name}</ListItem.Title>
-                  <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            ))
-          }
-
-        </View>
+            <ScrollView style={styles.scrollView}>
+              {
+              etudiants_data.map((etudiant, i) => (
+                <ListItem key={i} bottomDivider>
+                  <Avatar rounded source={{uri: etudiant.avatar_url}} />
+                  <ListItem.Content>
+                    <ListItem.Title>{etudiant.name}</ListItem.Title>
+                    <ListItem.Subtitle>{etudiant.subtitle}</ListItem.Subtitle>
+                  </ListItem.Content>
+                </ListItem>
+              ))
+            }
+            </ScrollView>
+          </SafeAreaView>
+  
       
       </TabView.Item>
       <TabView.Item style={{ width: '100%' }}>
@@ -143,6 +190,12 @@ export default function App() {
 const styles = StyleSheet.create({
   welcomeTxt:{
     fontSize: 18,
+  },
+  containerScroll: {
+    flex: 1,
+  },
+  scrollView: {
+    marginHorizontal: 20,
   },
   tabItem:{
     fontSize: 18,
