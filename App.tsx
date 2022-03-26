@@ -1,16 +1,26 @@
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, SafeAreaView , ScrollView } from "react-native";
-import Header_title from './views/Header_title';
-import { Avatar, ListItem, Tab, TabView } from 'react-native-elements';
-import { Button } from 'react-native-elements';
-import * as React from 'react';
-import { SearchBar } from 'react-native-elements';
-import Dashboard from './views/Dashboard';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Auth from './views/Auth';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AddStudent from './views/AddStudent';
 
 
 export default function App() {
+
+
   return (
-    <Dashboard />
-  )
+    <Auth />
+  );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
