@@ -58,7 +58,7 @@ function Auth({ navigation }) {
 
             <View style={styles.inputContainer}>
               <Image style={styles.inputIcon} source={require('../assets/pass_white.png')}/>
-              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Password" onChangeText={(pass) => { setPass( pass )}} />
+              <TextInput secureTextEntry={true} underlineColorAndroid ='transparent' style={styles.inputText} placeholder="Password" onChangeText={(pass) => { setPass( pass )}} />
             </View>
 
             <TouchableOpacity style={styles.btn} onPress={login}>

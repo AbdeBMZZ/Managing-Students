@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component, useEffect } from 'react';
 import { View, Text, Modal, Dimensions, Pressable, FlatList, TouchableOpacity, Alert, TextInput, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -100,7 +101,11 @@ export default function ModifyModal(props){
             <TouchableOpacity style={{flexDirection:'row',marginTop:30, justifyContent:'space-evenly', width:"100%"}} onPress={()=>{}}>
             <Button
                 title='Modifier'
-                onPress={()=>{alert("modifier")}}
+                onPress={()=>{
+                  axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/maj.php?cne=${etudiant.cne}&nom=${etudiant.nom}&prenom=${etudiant.prenom}&phone=${etudiant.phone}&email=${etudiant.email}&pass=${etudiant.password}`)
+                  
+                  closePopup()
+                }}
                 // style={{marginBottom:30}}
             />
 

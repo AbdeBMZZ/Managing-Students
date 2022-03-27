@@ -28,6 +28,7 @@ export default function Dashboard({navigation}) {
 
   const [is_admin, setIs_admin] = React.useState(true);
   const [search, setsearch] = React.useState("");
+  const [searchTouched, setsearchTouched] = React.useState(false);
   const [index, setIndex] = React.useState(0);
   
  
@@ -36,9 +37,7 @@ export default function Dashboard({navigation}) {
 
   var setEtudiant_search;
   React.useEffect( ()=>{
-
-    getEtudiants()
-    console.log(authenticated)
+      console.log(authenticated)
 
     setIs_admin(authenticated.isAdmin)
 
@@ -83,12 +82,12 @@ export default function Dashboard({navigation}) {
       </View>
       <TextInput
             style={styles.input}
-            onChangeText={async (txt)=>{
-              
+            onChangeText={async (txt)=>{ 
+              setsearchTouched(true)
               setSearch_txt(txt)
-              await getEtudiants()
+              // await getEtudiants()
               if (txt.length > 0) {
-                setEtudiantList(etudiantList.filter(val => val.cne.match(txt)))
+                setEtudiantList(etudiantList.filter((etd) =>  (etd.cne.includes(txt) || etd.nom.includes(txt))))
               }
               
                 // setSearch_txt(txt)
@@ -100,130 +99,12 @@ export default function Dashboard({navigation}) {
             value={search_txt}
             placeholder="Find student by cne"
           />
-      <StatusBar />
-            <SwipeToDelete refreshEtds={getEtudiants} etds={etudiantList} navigation={navigation} ></SwipeToDelete>
-            {addEtdVisible &&
-            <AddStudent refreshEtds={getEtudiants} setVisible= {setEtdVisible} />
-            }
-      {/* <Tab
-      value={index}
-      onChange={(e) => setIndex(e)}
-      indicatorStyle={{
-        backgroundColor: 'white',
-        height: 3,
-      }}
-      variant="primary"
-    >
-      <Tab.Item
-        title="etudiants"
-        titleStyle={{ fontSize: 12 }}
-        icon={{ name: 'people-outline', type: 'ionicon', color: 'white' }}
-      />
-      <Tab.Item
-        title="Add"
-        titleStyle={{ fontSize: 12 }}
-        icon={{ name: 'add-circle-outline', type: 'ionicon', color: 'white' }}
-      />
-    </Tab>
-
-    <TabView value={index} onChange={setIndex} animationType="spring">
-      
-      <TabView.Item style={{ width: '100%' }}>
-       */}
-
-      {/* <FlatList
-        data={etudiantList}
-        renderItem={({item}) => 
-        <View>
-          <Text style={styles.item}>{item.email}</Text>
-          <Avatar rounded source={{uri: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'}} />
-                  <ListItem.Content>
-                    <ListItem.Title>{item.nom}</ListItem.Title>
-                    <ListItem.Subtitle>{item.email}</ListItem.Subtitle>
-                  </ListItem.Content>
-        </View>
-        
-      }
-      /> */}
-      {/* 
-        
-
-          <TouchableOpacity style={styles.containerScroll}>
-          <TextInput
-            style={styles.input}
-            onChangeText={async (txt)=>{
-              
-              setSearch_txt(txt)
-              await getEtudiants()
-              if (txt.length > 0) {
-                setEtudiantList(etudiantList.filter(val => val.cne.match(txt)))
-              }
-              
-                // setSearch_txt(txt)
-                // let etds = etudiantList.filter((etd:any)=> (
-                //     etd.cne.includes(txt) || etd.nom.includes(txt)
-                // ) )
-                // setEtudiantList(etds)
-            }}
-            value={search_txt}
-            placeholder="Find student by cne"
-          />
-          */}
-          {/* <SafeAreaView >
             <StatusBar />
-            <SwipeToDelete></SwipeToDelete>
-          </SafeAreaView> */}
-            {/* <ScrollView style={styles.scrollView}>
-              {
-                  etudiantList && 
-                  etudiantList.map((etudiant:any, i:any) => (
-
-                <ListItem.Swipeable key={i} 
-                  leftContent={(reset:any) => (
-                  <Button
-                    title="Info"
-                    onPress={() => ()=>alert("info")}
-                    icon={{ name: 'info', color: 'white' }}
-                    buttonStyle={{ minHeight: '100%' }}
-                  />
-                )}
-                  rightContent={(reset:any) => (
-                  <Button
-                    title="Delete"
-                    onPress={() => ()=> alert("Delete")}
-                    icon={{ name: 'delete', color: 'white' }}
-                    buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
-                  />
-                )}
-                
-                onLongPress={()=>{
-                  console.warn("event -> onLongPress")
-                }
-                }
-                >
-
-                  <Avatar rounded source={{uri: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'}} />
-                  <ListItem.Content>
-                    <ListItem.Title>{etudiant.nom}</ListItem.Title>
-                    <ListItem.Subtitle>{etudiant.email}</ListItem.Subtitle>
-                  </ListItem.Content>
-                  
-                </ListItem.Swipeable>
-              ))
+              <SwipeToDelete refreshEtds={getEtudiants} etds={etudiantList} navigation={navigation} ></SwipeToDelete>
+              {addEtdVisible &&
+              <AddStudent refreshEtds={getEtudiants} setVisible= {setEtdVisible} />
             }
 
-            </ScrollView> */}
-          
-          {/* </TouchableOpacity>
-       */} 
-      {/* </TabView.Item>
-      <TabView.Item style={{ width: '100%' }}>
-        <AddStudent changeIndex ={setIndex} refreshEtds={getEtudiants} />
-      </TabView.Item>
-      
-    </TabView> */}
-      
-      
       </SafeAreaView>
     )
 
@@ -233,9 +114,37 @@ export default function Dashboard({navigation}) {
 
       <Header_title name = "home" nom={authenticated.nom} prenom = {authenticated.prenom} navigation={navigation}/>
       <SafeAreaView >
+
+            <Text
+              style={{fontSize:20, textAlign:'center', margin:20}}
+            >Vos coordonnees</Text>
+
             <StatusBar />
-            
-            {/* <SwipeToDelete refreshEtds = {getEtudiants} ></SwipeToDelete> */}
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/cne_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} value={authenticated.cne} editable={false} />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/name_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} value={authenticated.nom} editable={false}/>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/name_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} value={authenticated.prenom} editable={false}/>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/phone_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} value={authenticated.phone} editable={false} />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Image style={styles.inputIcon} source={require('../assets/phone_white.png')}/>
+              <TextInput underlineColorAndroid ='transparent' style={styles.inputText} value={authenticated.email} editable={false} />
+            </View>
+
       </SafeAreaView>
   
       </>

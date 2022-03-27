@@ -12,18 +12,18 @@ interface IRow {
 }
 
 
+var refreshEtds;
+
 export const renderRightActions = (row:any) => {
 
 
   return (
       <SafeAreaView>
 
-    <View style={styles.swipedRow}
-    >
+    <View style={styles.swipedRow}>
       <Animated.View style={[styles.deleteButton, {}]}>
         <TouchableOpacity>
             <View style={styles.btn_grp}>
-    
                 <View style={{marginRight:10}}>
                     <Button 
                         title="update"
@@ -66,15 +66,6 @@ const Item = (row:any) => (
           }}
         />
 
-        {/* <Avatar
-            rounded
-            size="medium"
-            title={row.nom[0].toUpperCase() + row.prenom[0].toUpperCase()}
-            source={{
-                uri:
-                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-            }}
-            /> */}
         <View style={styles.row}>
             <Text>{row.cne}</Text>
             <Text>{row.nom} {row.prenom}</Text>
@@ -87,7 +78,7 @@ const Item = (row:any) => (
         etudiant={row.rowEtudiant}
         setetudiant={row.setRowEtudiant}
         title={"Modifier"}
-        animationType={"fade"}
+        animationType={"slide"}
         closePopup={()=>{row.setmodal(false)}}
         haveOutsideTouch={true}
         />
@@ -100,10 +91,11 @@ export const SwipeToDelete = (props:any) =>{
     const [modifyModal, setModifyModal] = React.useState(false);
     const [rowEtudiant, setRowEtudiant] = React.useState({});
 
+    refreshEtds = props.refreshEtds()
     const showConfirmDialog = (row) => {
       return Alert.alert(
-        "Are your sure?",
-        "Are you sure you want to remove this student?",
+        "Attention",
+        "Voulez-vous vraiment supprimer cet étudiant?",
         [
           {
             text: "Oui",

@@ -24,7 +24,7 @@ function AddStudent({refreshEtds, setVisible}) {
       axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/ajout.php?cne=${cne}&nom=${name}&prenom=${prenom}&phone=${phone}&email=${email}&pass=${password}`)
       .then(async (response)=>{
         refreshEtds()
-
+        setVisible(false)
       })
       .catch((err)=> alert(err))
 
