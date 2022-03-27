@@ -12,6 +12,10 @@ import authContext from "./context/authContext";
 
 const Stack = createStackNavigator();
 
+interface TaskInterface {
+  title: string;
+  index: number;
+}
 
 export default function App() {
 
@@ -25,14 +29,17 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          gestureEnabled:false,
+          headerShown: false,
+          headerMode:'float'
         }}>
           <Stack.Screen
             name="Auth"
             component={Auth}
-            options={{ title: 'Welcome' }}
+            options={{ title: 'Welcome'}}
             />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="Dashboard" component={Dashboard} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </authContext.Provider>

@@ -9,8 +9,9 @@ import {
   Alert,
   Image
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-function AddStudent({changeIndex, refreshEtds}) {
+function AddStudent({refreshEtds, setVisible}) {
 
     const [cne, setCne] = React.useState('');
     const [name, setName] = React.useState('');
@@ -23,7 +24,6 @@ function AddStudent({changeIndex, refreshEtds}) {
       axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/ajout.php?cne=${cne}&nom=${name}&prenom=${prenom}&phone=${phone}&email=${email}&pass=${password}`)
       .then(async (response)=>{
         refreshEtds()
-        changeIndex(0)
 
       })
       .catch((err)=> alert(err))
@@ -35,6 +35,14 @@ function AddStudent({changeIndex, refreshEtds}) {
       <View style={styles.cantainer}>
           <Image style={styles.background} source={require('../assets/backgound.jpg')} />
           <View style={styles.subView}>
+        <Icon 
+          name='arrow-back-outline'
+          type='ionicon'
+          size={40}
+          onPress={()=>{
+            setVisible(false)
+          }}
+        />
             <Text style={styles.subTxt}>Ajouter un étudiant</Text>
 
             <View style={styles.inputContainer}>
@@ -80,7 +88,12 @@ function AddStudent({changeIndex, refreshEtds}) {
     cantainer: {
       backgroundColor: '#521be3',
       height: '100%',
-      fontFamily: 'Oswald_Bold'
+      fontFamily: 'Oswald_Bold',
+      position:'absolute',
+      top:0,
+      right:0,
+      width:"100%",
+      bottom:20
     },
     subView: {
       position: 'absolute',

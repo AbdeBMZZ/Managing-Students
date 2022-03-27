@@ -52,7 +52,11 @@ const Header_title = (props:nameProps) => {
 
 const styles = StyleSheet.create({
     container:{
-        height:130
+        height:200,
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        // textAlignVertical:'center',
+        alignItems:'center'
     },
     avatarStyle:{
         backgroundColor:"white",

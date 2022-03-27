@@ -1,15 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Alert, Text, View, TextInput, SafeAreaView, TouchableOpacity, Image , ScrollView, Modal, Animated, Pressable } from "react-native";
+import { StyleSheet, Alert, Text, View, TextInput, LayoutAnimation, SafeAreaView, TouchableOpacity, Image , ScrollView, Modal, Animated, Pressable, FlatList, TouchableHighlight } from "react-native";
 import Header_title from './Header_title';
-import { Avatar, ListItem, Tab, TabView } from 'react-native-elements';
+import { Avatar, Icon, ListItem, Tab, TabView } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import * as React from 'react';
 import { SearchBar } from 'react-native-elements';
 import axios from 'axios';
 import authContext from "../context/authContext";
 import AddStudent from './AddStudent';
+import Swipeout from 'react-native-swipeout';
 
-  
+import {SwipeListView} from 'react-native-swipe-list-view'
+import { SwipeToDelete } from './SwipeToDelete';
+// import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
+
 
 
 
@@ -18,7 +22,6 @@ import AddStudent from './AddStudent';
 export default function Dashboard({navigation}) {
 
 
-  const [visible, setVisible] = React.useState(false);
   const [search_txt, setSearch_txt] = React.useState("");
 
   const {authenticated} = React.useContext(authContext) 
@@ -31,6 +34,7 @@ export default function Dashboard({navigation}) {
   const [etudiantList, setEtudiantList] = React.useState([])
   const [etudiantList_search, setEtudiantList_search] = React.useState([])
 
+  var setEtudiant_search;
   React.useEffect( ()=>{
 
     getEtudiants()
@@ -38,6 +42,8 @@ export default function Dashboard({navigation}) {
 
     setIs_admin(authenticated.isAdmin)
 
+    setEtudiant_search = etudiantList
+    setEtudiantList_search(etudiantList)
     },[])
 
   const updateSearch = (search:string) => {
@@ -45,24 +51,61 @@ export default function Dashboard({navigation}) {
   };
 
   async function getEtudiants(){
+    
     const data = await axios.get("https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/selection.php").catch()
-    await setEtudiantList(data.data)
-    await setEtudiantList_search(data.data)
+    setEtudiantList(data.data)
   }
-
+  
+  
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [addEtdVisible, setEtdVisible] = React.useState(false);
 
   const [etudiantToModify, setEtudiantToModify] = React.useState({})
 
-  if (is_admin)
-    return (
-      <>
-      
-         
 
+
+
+
+  if (!is_admin)
+    return (
+      <SafeAreaView style={{flex:1}}>
       <Header_title name = "admin" nom={authenticated.nom} prenom = {authenticated.prenom} navigation = {navigation}/>
       
-      <Tab
+      <View style={styles.admin_etd_add}>
+        <Text style={{flex: 0.4, fontSize:20 }} >Etudiants</Text>
+        <Icon
+          size={40}
+          color='#517fa5'
+          onPress={() => setEtdVisible(true)}
+          style={{fontSize:30}}
+          name='add-circle' 
+          />
+      </View>
+      <TextInput
+            style={styles.input}
+            onChangeText={async (txt)=>{
+              
+              setSearch_txt(txt)
+              await getEtudiants()
+              if (txt.length > 0) {
+                setEtudiantList(etudiantList.filter(val => val.cne.match(txt)))
+              }
+              
+                // setSearch_txt(txt)
+                // let etds = etudiantList.filter((etd:any)=> (
+                //     etd.cne.includes(txt) || etd.nom.includes(txt)
+                // ) )
+                // setEtudiantList(etds)
+            }}
+            value={search_txt}
+            placeholder="Find student by cne"
+          />
+      <StatusBar />
+            <SwipeToDelete etds={etudiantList} navigation={navigation} ></SwipeToDelete>
+            {addEtdVisible &&
+            <AddStudent refreshEtds={getEtudiants} setVisible= {setEtdVisible} />
+            }
+      {/* <Tab
       value={index}
       onChange={(e) => setIndex(e)}
       indicatorStyle={{
@@ -84,47 +127,80 @@ export default function Dashboard({navigation}) {
     </Tab>
 
     <TabView value={index} onChange={setIndex} animationType="spring">
-      <TabView.Item style={{ width: '100%' }}>
       
+      <TabView.Item style={{ width: '100%' }}>
+       */}
+
+      {/* <FlatList
+        data={etudiantList}
+        renderItem={({item}) => 
+        <View>
+          <Text style={styles.item}>{item.email}</Text>
+          <Avatar rounded source={{uri: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'}} />
+                  <ListItem.Content>
+                    <ListItem.Title>{item.nom}</ListItem.Title>
+                    <ListItem.Subtitle>{item.email}</ListItem.Subtitle>
+                  </ListItem.Content>
+        </View>
+        
+      }
+      /> */}
+      {/* 
         
 
-          <SafeAreaView style={styles.containerScroll}>
+          <TouchableOpacity style={styles.containerScroll}>
           <TextInput
             style={styles.input}
-            onChangeText={(txt)=>{
-
-                setSearch_txt(txt)
-                if(txt.length == 0)
-                    getEtudiants()
-                else{
-                    console.log(txt)
-                    let etds = etudiantList.filter((etd)=> (
-                        etd.cne.includes(txt) || etd.nom.includes(txt)
-                    ) )
-                    setEtudiantList(etds)
-                }
+            onChangeText={async (txt)=>{
+              
+              setSearch_txt(txt)
+              await getEtudiants()
+              if (txt.length > 0) {
+                setEtudiantList(etudiantList.filter(val => val.cne.match(txt)))
+              }
+              
+                // setSearch_txt(txt)
+                // let etds = etudiantList.filter((etd:any)=> (
+                //     etd.cne.includes(txt) || etd.nom.includes(txt)
+                // ) )
+                // setEtudiantList(etds)
             }}
             value={search_txt}
             placeholder="Find student by cne"
           />
-          
-            <ScrollView style={styles.scrollView}>
+          */}
+          {/* <SafeAreaView >
+            <StatusBar />
+            <SwipeToDelete></SwipeToDelete>
+          </SafeAreaView> */}
+            {/* <ScrollView style={styles.scrollView}>
               {
                   etudiantList && 
-                  etudiantList.map((etudiant:any, i) => (
-                <ListItem key={i} bottomDivider
-                onPress={()=>{
-                    setEtudiantToModify(etudiant)
-                    setModalVisible(true)}
+                  etudiantList.map((etudiant:any, i:any) => (
+
+                <ListItem.Swipeable key={i} 
+                  leftContent={(reset:any) => (
+                  <Button
+                    title="Info"
+                    onPress={() => ()=>alert("info")}
+                    icon={{ name: 'info', color: 'white' }}
+                    buttonStyle={{ minHeight: '100%' }}
+                  />
+                )}
+                  rightContent={(reset:any) => (
+                  <Button
+                    title="Delete"
+                    onPress={() => ()=> alert("Delete")}
+                    icon={{ name: 'delete', color: 'white' }}
+                    buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
+                  />
+                )}
+                
+                onLongPress={()=>{
+                  console.warn("event -> onLongPress")
+                }
                 }
                 >
-                {/* <Avatar
-                    size="xlarge"
-                    rounded
-                    title="CR"
-                    onPress={() => console.log("Works!")}
-                    activeOpacity={1}
-                    /> */}
 
                   <Avatar rounded source={{uri: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'}} />
                   <ListItem.Content>
@@ -132,35 +208,34 @@ export default function Dashboard({navigation}) {
                     <ListItem.Subtitle>{etudiant.email}</ListItem.Subtitle>
                   </ListItem.Content>
                   
-                </ListItem>
+                </ListItem.Swipeable>
               ))
             }
-            </ScrollView>
+
+            </ScrollView> */}
           
-          </SafeAreaView>
-      
-      </TabView.Item>
+          {/* </TouchableOpacity>
+       */} 
+      {/* </TabView.Item>
       <TabView.Item style={{ width: '100%' }}>
         <AddStudent changeIndex ={setIndex} refreshEtds={getEtudiants} />
       </TabView.Item>
       
-    </TabView>
+    </TabView> */}
       
       
-      </>
+      </SafeAreaView>
     )
 
   else
     return (
       <>
+
       <Header_title name = "home" nom={authenticated.nom} prenom = {authenticated.prenom} navigation={navigation}/>
-      <View style={styles.viewContainer}>
-        <View style={styles.container}>
-          <Text style={styles.welcomeTxt}>Bonjour</Text>
-          <Text style={styles.nameTxt}>abdellah boumaiza</Text>
-          
-        </View>
-      </View>
+      <SafeAreaView >
+            <StatusBar />
+            <SwipeToDelete refreshEtds = {getEtudiants} ></SwipeToDelete>
+      </SafeAreaView>
   
       </>
     );
@@ -171,9 +246,25 @@ const styles = StyleSheet.create({
    
   welcomeTxt:{
     fontSize: 18,
+    alignItems:'center',
+    textAlign:'center'
+  },
+  admin_etd_add:{
+
+    marginTop:20,
+    marginBottom:20,
+    flexDirection:'row',
+    justifyContent:'space-evenly',
+    // textAlignVertical:'center',
+    alignItems:'center'
+
+  },
+  admin_txt:{
+    textAlignVertical:'center'
   },
   containerScroll: {
     flex: 1,
+    
   },
   scrollView: {
     marginHorizontal: 20,
@@ -188,6 +279,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
+  item: {
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 10,
+  },
   nameTxt:{
     fontSize:20
   },
@@ -196,7 +292,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:"whitesmoke",
+    backgroundColor:"white",
     borderRadius: 40,
 
   },
