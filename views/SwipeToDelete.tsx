@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React from 'react';
-import {Alert, Animated,Button, FlatList, StyleSheet, Text, View} from 'react-native';
+import {Alert, Animated,Button, FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import { Avatar, Icon } from 'react-native-elements';
 import {Swipeable, TouchableOpacity} from 'react-native-gesture-handler';
+import ModifyModal from './modifyModal';
 interface IRow {
   cne: string;
   nom: string;
@@ -11,9 +12,12 @@ interface IRow {
 }
 
 
-const renderRightActions = (row:any,) => {
-    
+export const renderRightActions = (row:any) => {
+
+
   return (
+      <SafeAreaView>
+
     <View style={styles.swipedRow}
     >
       <Animated.View style={[styles.deleteButton, {}]}>
@@ -23,26 +27,33 @@ const renderRightActions = (row:any,) => {
                 <View style={{marginRight:10}}>
                     <Button 
                         title="update"
-                        onPress={(e)=>{alert("CNE:" + row.email)}}
-                    />
+                        onPress={(e)=>{
+                          row.setmodal(!row.modal)
+                          row.setRowEtudiant(row)
+                        }}
+                        />
+                    
                 </View>
                 <View >
                     <Button 
                         title="delete"
                         color={"red"}
-                        onPress={async ()=>{
-                            row.showConfirmDialog()
+                        onPress={()=>{
+                            row.showConfirmDialog(row)
                         }}
                         />
                 </View>
+
             </View>
         </TouchableOpacity>
       </Animated.View>
     </View>
+     </SafeAreaView>
   );
 };
 
 const Item = (row:any) => (
+    
   <Swipeable renderRightActions={() => renderRightActions(row)}>
       <View style={styles.mainView}>
           
@@ -70,27 +81,44 @@ const Item = (row:any) => (
             <Text>{row.email}</Text>
         </View>
     </View>
+    <ModifyModal 
+        key={row.cne}
+        show={row.modal}
+        etudiant={row.rowEtudiant}
+        setetudiant={row.setRowEtudiant}
+        title={"Modifier"}
+        animationType={"fade"}
+        closePopup={()=>{row.setmodal(false)}}
+        haveOutsideTouch={true}
+        />
   </Swipeable>
 );
 
 export const SwipeToDelete = (props:any) =>{
 
     const [showBox, setShowBox] = React.useState(true);
+    const [modifyModal, setModifyModal] = React.useState(false);
+    const [rowEtudiant, setRowEtudiant] = React.useState({});
 
-    const showConfirmDialog = () => {
+    const showConfirmDialog = (row) => {
       return Alert.alert(
         "Are your sure?",
         "Are you sure you want to remove this student?",
         [
-          // The "Yes" button
           {
             text: "Oui",
             onPress: () => {
               setShowBox(false);
+              // alert(row.cne)
+              axios.get(`https://iot-nodemcu-projects.000webhostapp.com/gestion_etudiants/suppression.php?cne=${row.cne}`)
+                .then((data)=>{
+                  console.log(data)
+                  props.refreshEtds()
+                })
+                .catch((err)=>{alert(err)})
+
             },
           },
-          // The "No" button
-          // Does nothing but dismiss the dialog when tapped
           {
             text: "Non",
           },
@@ -98,7 +126,7 @@ export const SwipeToDelete = (props:any) =>{
       );
     };
   const renderItem = (dataItem:any) => (
-    <Item nom={dataItem.nom} prenom={dataItem.prenom} showConfirmDialog={showConfirmDialog} email={dataItem.email} cne={dataItem.cne} />
+    <Item key={dataItem.cne} phone={dataItem.phone} password={dataItem.password} nom={dataItem.nom} prenom={dataItem.prenom} rowEtudiant={rowEtudiant} setRowEtudiant={setRowEtudiant} setmodal={setModifyModal} modal={modifyModal} showConfirmDialog={showConfirmDialog} email={dataItem.email} cne={dataItem.cne} />
   );
 
   return (

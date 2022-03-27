@@ -66,7 +66,7 @@ export default function Dashboard({navigation}) {
 
 
 
-  if (!is_admin)
+  if (is_admin)
     return (
       <SafeAreaView style={{flex:1}}>
       <Header_title name = "admin" nom={authenticated.nom} prenom = {authenticated.prenom} navigation = {navigation}/>
@@ -101,7 +101,7 @@ export default function Dashboard({navigation}) {
             placeholder="Find student by cne"
           />
       <StatusBar />
-            <SwipeToDelete etds={etudiantList} navigation={navigation} ></SwipeToDelete>
+            <SwipeToDelete refreshEtds={getEtudiants} etds={etudiantList} navigation={navigation} ></SwipeToDelete>
             {addEtdVisible &&
             <AddStudent refreshEtds={getEtudiants} setVisible= {setEtdVisible} />
             }
@@ -234,7 +234,8 @@ export default function Dashboard({navigation}) {
       <Header_title name = "home" nom={authenticated.nom} prenom = {authenticated.prenom} navigation={navigation}/>
       <SafeAreaView >
             <StatusBar />
-            <SwipeToDelete refreshEtds = {getEtudiants} ></SwipeToDelete>
+            
+            {/* <SwipeToDelete refreshEtds = {getEtudiants} ></SwipeToDelete> */}
       </SafeAreaView>
   
       </>
